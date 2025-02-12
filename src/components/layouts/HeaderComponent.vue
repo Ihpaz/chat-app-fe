@@ -41,7 +41,7 @@
                 
           
                 <hr class="w-full dark:border-zinc-700">
-                <button @click="statusDialog = true" class="p-4 text-center hover:bg-gray-50 dark:hover:bg-zinc-700 w-full text-xs flex justify-left items-center dark:text-gray-300">
+                <button @click="logout" class="p-4 text-center hover:bg-gray-50 dark:hover:bg-zinc-700 w-full text-xs flex justify-left items-center dark:text-gray-300">
                     <p class="text-sm font-medium">Keluar</p>
                 </button>
                 <hr class="w-full dark:border-zinc-700">
@@ -134,13 +134,14 @@
     const closeProfileAction = ()  => status.value = false;
 
      const logout = async () => {
-        await localStorage.removeItem('token')
+       
         
         await axios.post('auth/logout',{},{
             headers:{
                 Authorization: `Bearer ${store.getters['Auth/token']}`
             }
         }).then(async () => {
+            await localStorage.removeItem('token')
             await store.dispatch('Auth/setUser',false)
             await store.dispatch('Auth/setToken','')
             await router.push({

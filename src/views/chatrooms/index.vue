@@ -1,6 +1,6 @@
 <template>
     <div class="home p-8">
-       <CardChat />
+       <CardChat :activechat="chatRoomsActive" />
     </div>
 </template>
 
@@ -13,18 +13,19 @@ import CardChat from '../../components/ui/CardChat.vue'
   const axios = inject('axios')
   const store = useStore()
   const user = computed(() => store.getters['Auth/user'])
-  const chatRooms = ref([])
+  const chatRoomsActive = ref(0)
 
   onMounted(() => {
     getData()
   })
 
   const getData = async () => {
-    chatRooms.value = false;
+    chatRoomsActive.value = false;
     await axios
-      .get(`/chat/chat_rooms`, store.getters['Auth/config'])
+      .get(`/chat/chat_rooms_active_count`, store.getters['Auth/config'])
       .then(ress => {
-        chatRooms.value = ress.data.data;
+        chatRoomsActive.value = ress.data.data;
+        console.log( chatRoomsActive.value)
       })
       .catch(err => {
         let response = responseErrorApi(err)

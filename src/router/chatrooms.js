@@ -38,8 +38,28 @@ export default {
                 key:name,
                 path:name+'.list'
             },
-            component : () => import(`../views/${folder}/chatrooms.vue`)
-        }
+            component : () => import(`../views/${folder}/ChatRooms.vue`)
+        },
+        {
+            path:'active',
+            name:'active'+name,
+            meta:{
+                auth:true,
+                key:name,
+                path:name+'.active'
+            },
+            component : () => import(`../views/${folder}/OpenChatRooms.vue`)
+        },
+        {
+            path:'window/:id',
+            name:'window',
+            meta:{
+                auth:true,
+                key:name,
+                path:name+'.window'
+            },
+            component : () => import(`../views/${folder}/WindowChatRooms.vue`)
+        },
        
     ]
 }
