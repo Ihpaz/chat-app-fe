@@ -3,9 +3,13 @@
         <div class="flex flex-col container mx-auto bg-white dark:bg-zinc-800 dark:border-zinc-700 rounded-md">
             <div class="flex justify-between items-center p-2">
                 <h1 class="text-md font-bold">Chat Rooms</h1>
-                <button-primary  type="link" target="_blank">
-                    Create Room
-                </button-primary>
+                <div class="flex"><h1>20</h1> <p>Rooms</p></div>
+            </div>
+            <div class="flex justify-between items-center p-2" v-for="item,index in chatRooms" :key="index">
+                <h1 class="text-md font-bold">{{item.name}}</h1>
+                <div class="relative rounded-full w-8 h-8">
+                  <h1><{{}}</h1>
+                </div>
             </div>
             
         </div>
