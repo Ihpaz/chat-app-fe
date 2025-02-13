@@ -23,7 +23,7 @@
                 </div>
               </div>
               <div class="flex gap-2">
-               <button type="button" @click="join(item.id)" class=" bg-sky-700 text-white p-2 text-sm rounded-md flex justify-center items-center dark:text-gray-300  dark:border-gray-900 " :class="loading.includes(item.id) ? 'cursor-not-allowed bg-slate-200 dark:hover:bg-zinc-700 opacity-60' : 'cursor-pointer'" >
+               <button type="button" @click="join(item.id,item.uuid)" class=" bg-sky-700 text-white p-2 text-sm rounded-md flex justify-center items-center dark:text-gray-300  dark:border-gray-900 " :class="loading.includes(item.id) ? 'cursor-not-allowed bg-slate-200 dark:hover:bg-zinc-700 opacity-60' : 'cursor-pointer'" >
                   Join Chat Room
                   <Spinner v-show="loading.includes(item.id)"/>
                </button>
@@ -41,16 +41,29 @@
 import { useStore } from 'vuex'
 import { onMounted,computed,ref, inject } from 'vue'
 import Spinner from '../../components/ui/Spinner.vue';
+import { useRouter } from 'vue-router'
 
   const axios = inject('axios')
   const store = useStore()
   const user = computed(() => store.getters['Auth/user'])
   const chatRooms = ref([])
   const loading = ref([])
+  const router = useRouter()
 
   onMounted(() => {
     getData()
   })
+
+  const openNewWindow = (id) => {
+    const route = router.resolve({
+      name: "window",
+      params: { id },
+    });
+
+    window.open(route.href, "_blank");
+  };
+
+ 
 
   const getData = async () => {
     chatRooms.value = false;
@@ -65,7 +78,7 @@ import Spinner from '../../components/ui/Spinner.vue';
       })
   }
 
-  async function join(room_id) {
+  async function join(room_id,uuid) {
     let response = ''
   
     if (!loading.value.includes(room_id)) {
@@ -79,18 +92,10 @@ import Spinner from '../../components/ui/Spinner.vue';
         )
         .then(response => {
           getData()
-          if (response.status == 200) {
-            toast.success(response.data.message, {
-              position: toast.POSITION.TOP_CENTER,
-            })
-          }
+          openNewWindow(uuid)
         
         })
         .catch(err => {
-          toast.error(err.response.data.message, {
-            position: toast.POSITION.TOP_CENTER,
-          })
-          response = responseErrorApi(err)
         })
         .finally(() => {
           let index = loading.value.indexOf(room_id);

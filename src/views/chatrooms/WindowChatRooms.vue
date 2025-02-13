@@ -16,7 +16,7 @@
                 </div>
             </div>
            
-            <div class="grid md:grid-cols-3 grid-cols-1  gap-2">
+            <div class="grid lg:grid-cols-3 grid-cols-1  gap-2">
                 <div class="relative col-span-2 h-[600px]  bg-white dark:bg-zinc-800 dark:border-zinc-700 rounded-md ">
                   <div ref="chatContainer" class="mb-4 max-h-[550px] flex flex-col gap-2 overflow-scroll">
                     <template v-if="chatRooms.chat_rooms_history?.length > 0">
@@ -86,7 +86,7 @@
                         </h1>
                         <div class=" rounded-md  h-6 bg-lime-600 flex items-center px-3">
                           <h1 class="text-center text-white text-xs dark:text-white">
-                            {{ chatRooms.user_chat_rooms?.length }} Users
+                            {{ activeChatRooms?.length }}  Users    
                           </h1>
                         </div>
                     </div>
@@ -121,7 +121,8 @@ import { onMounted,computed,ref, inject, watch, nextTick  } from 'vue'
 import Spinner from '../../components/ui/Spinner.vue';
 import {useRoute} from 'vue-router'
 import { toast } from 'vue3-toastify'
-import {onMessageListener,eventBus  } from "../../firebase";
+import {db, collection, onSnapshot,eventBus,where,query  } from "../../firebase";
+import { useRouter } from 'vue-router'
 
   const axios = inject('axios')
   const store = useStore()
@@ -134,6 +135,11 @@ import {onMessageListener,eventBus  } from "../../firebase";
   const loadinglogout = ref(false)
   const chatId = ref('')
   const status = ref('');
+  const router = useRouter()
+
+  const activeChatRooms = computed(() => {
+      return chatRooms.value.user_chat_rooms?.filter(room => room.is_active);
+  });
 
   watch(() => chatRooms.value.chat_rooms_history, async () => {
     await nextTick(); // Ensure DOM updates before scrolling
@@ -145,8 +151,15 @@ import {onMessageListener,eventBus  } from "../../firebase";
   onMounted(async () => {
     await getData()
     chatId.value = chatRooms.value.name;
-    eventBus.on('chat'+chatId.value, getData);
-    console.log(user.value.id)
+    const messagesRef = collection(db, "fcm_messages");
+    const q = query(messagesRef, where("room", "==", chatId.value));
+
+    onSnapshot(q, (snapshot) => {
+        if (!snapshot.empty) {
+            getData(); // 🔥 Panggil fungsi jika ada data baru dengan room yang sesuai
+        }
+    });
+    
   })
 
   const getData = async () => {
@@ -194,7 +207,7 @@ import {onMessageListener,eventBus  } from "../../firebase";
           toast.error(err, {
             position: toast.POSITION.TOP_CENTER,
           })
-          // response = responseErrorApi(err)
+         
         })
         .finally(() => {
           loading.value=false
@@ -217,19 +230,14 @@ import {onMessageListener,eventBus  } from "../../firebase";
           store.getters['Auth/config']
         )
         .then(response => {
-          getData()
-          if (response.status == 200) {
-            toast.success(response.data.message, {
-              position: toast.POSITION.TOP_CENTER,
-            })
-          }
+          router.push('/chat-rooms')
         
         })
         .catch(err => {
           toast.error(err, {
             position: toast.POSITION.TOP_CENTER,
           })
-          // response = responseErrorApi(err)
+         
         })
         .finally(() => {
           loadinglogout.value=false

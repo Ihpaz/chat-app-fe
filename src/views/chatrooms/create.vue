@@ -52,6 +52,8 @@
     getData()
   })
 
+
+
   const store = useStore()
   const auth = computed(() => store.getters['Auth/user'])
   const axios = inject('axios')
@@ -60,6 +62,15 @@
   const loading = ref(false)
   const listuser = ref()
   const router = useRouter()
+
+  const openNewWindow = (id) => {
+    const route = router.resolve({
+      name: "window",
+      params: { id },
+    });
+
+    window.open(route.href, "_blank");
+  };
 
   const getData = async () => {
     await axios
@@ -96,9 +107,7 @@
               position: toast.POSITION.TOP_CENTER,
             })
           }
-          router.push({
-            path: '/chat-rooms',
-          })
+          openNewWindow(response.data.uuid)
         })
         .catch(err => {
           toast.error(err.response.data.message, {

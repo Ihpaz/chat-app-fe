@@ -9,7 +9,7 @@
           <h1 class="text-5xl dark:text-white">{{ props.data.user_registered }}<span class="text-sm">Registered</span></h1>
           <unicon icon-style="line" class="h-4 z-20 fill-black dark:fill-gray-300 group-hover/item:invisible" name="exclamation-circle" ></unicon>
           <div class="absolute rounded-full bg-red-700/80 h-[100px] w-[100px] -bottom-[150px] -right-[150px] group-hover/item:w-[300px] group-hover/item:h-[300px] transition-all duration-500">
-            <span class="text-white relative top-[100px] left-10 text-base">Selengkapnya</span>
+            <span class="text-white relative top-[100px] left-10 text-sm">Except admin</span>
           </div>
         </div>
       </div>
@@ -22,7 +22,7 @@
           <h1 class="text-5xl dark:text-white">{{ props.data.user_active }}<span class="text-sm">User Active</span></h1>
           <unicon icon-style="line" class="h-4 z-20 fill-black dark:fill-gray-300 group-hover/item:invisible" name="exclamation-circle" ></unicon>
           <div class="absolute rounded-full bg-green-700/80 h-[100px] w-[100px] -bottom-[150px] -right-[150px] group-hover/item:w-[300px] group-hover/item:h-[300px] transition-all duration-500">
-            <span class="text-white relative top-[100px] left-10 text-base">Selengkapnya</span>
+            <span class="text-white relative top-[100px] left-10 text-sm">Have active room</span>
           </div>
         </div>
       </div>
@@ -35,7 +35,7 @@
           <h1 class="text-5xl dark:text-white">{{ props.data.chat_room_active }}<span class="text-sm">Chat Rooms Active</span></h1>
           <unicon icon-style="line" class="h-4 z-20 fill-black dark:fill-gray-300 group-hover/item:invisible" name="exclamation-circle" ></unicon>
           <div class="absolute rounded-full bg-yellow-700/80 h-[100px] w-[100px] -bottom-[150px] -right-[150px] group-hover/item:w-[300px] group-hover/item:h-[300px] transition-all duration-500">
-            <span class="text-white relative top-[100px] left-10 text-base">Selengkapnya</span>
+            <span class="text-white relative top-[100px] left-10 text-sm"> Have active User</span>
           </div>
         </div>
       </div>

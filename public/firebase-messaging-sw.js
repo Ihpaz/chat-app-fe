@@ -15,6 +15,14 @@ const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
     console.log("Received background message:", payload);
+
+   
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clients) => {
+        clients.forEach((client) => {
+          client.navigate(client.url); // Reload halaman
+        });
+      });
+      
     const notificationTitle = payload.notification.title;
     const notificationOptions = {
         body: payload.notification.body,

@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getFirestore, collection, onSnapshot,where,query } from "firebase/firestore";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import mitt from "mitt";
@@ -19,6 +20,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
+const db = getFirestore(app);
 
 // Register the service worker manually
 if ("serviceWorker" in navigator) {
@@ -50,26 +52,27 @@ export const requestPermission = async () => {
         console.error("Error getting FCM token", error);
     }
 };
-
 // Listen for messages
 export const onMessageListener = () =>
-    new Promise((resolve) => {
+    
+        new Promise((resolve) => {
+          
         onMessage(messaging, (payload) => {
-            console.log("Notification received:", payload);
-
-            if (payload.notification.title) {
-                eventBus.emit(payload.notification.title); // Emit event for chatroom
-              }
-
-            toast(payload.notification.body, {
-                autoClose: 5000, // Closes after 5 seconds
-                position: "top-right",
-                theme: "light",
-              });
+           
+            
+            if(payload.notification.title == 'rejected' || payload.notification.title == 'exit'){
+                toast(payload.notification.body, {
+                    autoClose: 5000, // Closes after 5 seconds
+                    position: "top-right",
+                    theme: "light",
+                  });
+            }
+          
 
             resolve(payload);
         });
+            
+         
 });
 
-
-export { eventBus };
+export { eventBus,messaging,db, collection, onSnapshot ,where,query };

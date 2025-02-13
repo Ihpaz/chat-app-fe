@@ -28,6 +28,42 @@
         
           <main class="">
             <router-view />
+            <dialog-component title="Invitation" v-model="statusDialog">
+                <div class="">
+                    <p class="font-medium text-gray-500 dark:text-gray-300 text-xl">
+                        Anda di undang untuk join ke room ? 
+                    </p>
+                </div>
+
+                <template v-slot:footer>
+                <div class="flex justify-end space-x-2">
+                    <button
+                    @click="reject"
+                    class="rounded pr-4 pl-2 py-1 bg-slate-100 hover:bg-slate-200 text-dark border border-grey-300 flex items-center dark:text-gray-300 dark:bg-zinc-700 dark:border-gray-900 dark:hover:bg-zinc-600 text-sm cursor-pointer"
+                    >
+                    <unicon
+                        icon-style="line"
+                        class="h-4 fill-gray-500 dark:fill-gray-300"
+                        name="times"
+                    ></unicon>
+                      Reject
+                    </button>
+
+                    <button
+                    class="rounded px-2 py-1 bg-slate-100 hover:bg-slate-200 text-dark border border-grey-300 flex justify-center items-center dark:text-gray-300 dark:bg-zinc-700 dark:border-gray-900 dark:hover:bg-zinc-600 text-sm cursor-pointer"
+                    @click="accept"
+                    >
+                    <unicon
+                        icon-style="line"
+                        class="h-4"
+                        name="signout"
+                        fill="red"
+                    ></unicon>
+                    <span>Accept</span>
+                    </button>
+                </div>
+                </template>
+            </dialog-component>
           </main>
 
           <FooterComponent/>
@@ -129,17 +165,38 @@ input {
 </style>
 <script setup>
 import { useStore } from 'vuex'
-import { computed, ref,onMounted } from 'vue'
+import { computed, ref,onMounted ,inject} from 'vue'
 import HeaderComponent from './components/layouts/HeaderComponent.vue';
 import SidebarComponent from './components/layouts/SidebarComponent.vue';
 import FooterComponent from './components/layouts/FooterComponent.vue';
 import {onMessageListener } from "./firebase";
+import DialogComponent from './components/patrial/DialogComponent.vue'
+import { useRouter } from 'vue-router'
+
+const statusDialog=ref(false)
+const chat_room_id=ref(null)
+const chat_room_uuid=ref(null)
+const loading = ref(false)
+const axios = inject('axios')
+const store = useStore()
+const router = useRouter()
 
 onMounted(() => {
-  onMessageListener().catch((err) => console.error("Notification error:", err));
+  onMessageListener()
+        .then((payload) => {
+            if(payload.notification.title==='invitation'){
+              statusDialog.value = true;
+              chat_room_uuid.value = payload.data.id;
+              chat_room_id.value = payload.data.url;
+            }
+
+            console.log(statusDialog.value,'status')
+        })
+        .catch((err) => console.error("Notification error:", err));
+
+    
 });
 
-const store = useStore()
 const darkMode = ref(
   localStorage.theme === 'dark' || !('theme' in localStorage)
 )
@@ -149,5 +206,70 @@ document.documentElement.classList.toggle('dark', darkMode.value)
 
 const user = computed(() => store.getters['Auth/user'])
 const isStatusBarVisible = computed(() => store.getters['status_sidebar']);
+
+const openNewWindow = (id) => {
+    const route = router.resolve({
+      name: "window",
+      params: { id },
+    });
+
+    window.open(route.href, "_blank");
+};
+
+async function accept() {
+  let response = ''
+
+  if (!loading.value) {
+    loading.value = true;
+    await axios
+      .post('chat/accept',
+        { 
+          chat_room_id:chat_room_id.value
+        },
+        store.getters['Auth/config']
+      )
+      .then(response => {
+        console.log(chat_room_uuid.value)
+        openNewWindow(chat_room_uuid.value);
+      })
+      .catch(err => {
+      })
+      .finally(() => {
+        loading.value=false
+        statusDialog.value =false;
+      })
+  }
+
+  return response
+}
+
+async function reject() {
+    let response = ''
+  
+    if (!loading.value) {
+      loading.value = true;
+      await axios
+        .post('chat/reject',
+          { 
+            chat_room_id:chat_room_id.value
+          },
+          store.getters['Auth/config']
+        )
+        .then(response => {
+          
+         
+        
+        })
+        .catch(err => {
+         
+        })
+        .finally(() => {
+          loading.value=false
+          statusDialog.value =false;
+        })
+    }
+  
+    return response
+  }
 
 </script>
