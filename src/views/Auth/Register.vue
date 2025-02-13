@@ -122,7 +122,7 @@
             </button>
           </div>
           <p class="text-gray-200 text-center text-xs font-medium">
-            Copyright &copy; 2024 
+            Copyright &copy; 2025 
           </p>
         </form>
       </div>

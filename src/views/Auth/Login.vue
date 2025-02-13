@@ -118,7 +118,7 @@
             </button>
           </div>
           <p class="text-gray-200 text-center text-xs font-medium">
-            Copyright &copy; 2024
+            Copyright &copy; 2025
           </p>
         </form>
       </div>
@@ -191,7 +191,7 @@
                 store.dispatch('Auth/setUser', response.data.user)
                 store.dispatch('Auth/setToken', response.data.authorisation?.token)
                 localStorage.setItem('token', response.data.authorisation?.token)
-                
+
                   axios
                   .put(`auth/user/${response.data?.user?.id}`, {fcm_token:ress},store.getters['Auth/config'])
                   .then(response => {
