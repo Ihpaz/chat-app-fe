@@ -21,7 +21,8 @@ import {
   uniArrowRight, uniEyeSlash, uniEye, uniAngleLeftB, uniPresentationLine, 
   uniLockAccess, uniAbacus, uniFileCheckAlt, uniUserCheck, uniCopyLandscape, uniPresentationPlay, uniDataSharing,
   uniUserSquare, uniUserExclamation,uniRefresh, uniEditAlt, uniClock,uniCompressAlt,uniBrain,
-  uniFileExclamation, uniVenus, uniMars, uniSlidersVAlt,uniPresentationCheck,uniFileAlt,uniFileDownloadAlt,uniGoogle,uniChatInfo
+  uniFileExclamation, uniVenus, uniMars, uniSlidersVAlt,uniPresentationCheck,uniFileAlt,
+  uniFileDownloadAlt,uniGoogle,uniChatInfo,uniMessage,uniSignOutAlt
  } from 'vue-unicons/dist/icons'
 import store from './store'
 
@@ -41,7 +42,7 @@ Unicon.add([
   uniArrowRight, uniEyeSlash, uniEye, uniAngleLeftB, uniPresentationLine, 
   uniLockAccess, uniAbacus, uniFileCheckAlt, uniUserCheck, uniCopyLandscape, uniPresentationPlay, uniDataSharing,
   uniUserSquare, uniUserExclamation,uniRefresh, uniEditAlt, uniClock,uniCompressAlt,uniBrain,uniFileExclamation, uniVenus, uniMars, uniSlidersVAlt,uniFileDownloadAlt,
-  uniPresentationCheck,uniFileAlt,uniGoogle,uniChatInfo
+  uniPresentationCheck,uniFileAlt,uniGoogle,uniChatInfo,uniMessage,uniSignOutAlt
 ])
 
 

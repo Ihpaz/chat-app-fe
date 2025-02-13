@@ -1,22 +1,22 @@
 <template>
     <div class="home p-8">
-      <div class="flex flex-col gap-4 bg-white dark:bg-zinc-800 p-6 w-full md:w-1/2  justify-between mx-auto">
+      <div class="flex flex-col gap-4 bg-white  p-6 w-full md:w-1/2  justify-between mx-auto">
          
           <div class="relative z-0 w-full col-span-3 row-span-1 group">
             <input
               type="text"
               v-model="name"
               id="integration_url"
-              class="block py-2.5 px-0 w-full bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer text-base text-gray-900 border-gray-300 focus:border-gray-500 dark:text-gray-300 dark:border-zinc-700 dark:focus:border-zinc-500"
+              class="block py-2.5 px-0 w-full bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer text-base text-gray-900 border-gray-300 "
               placeholder=" "
               required
             />
 
-            <label class="absolute duration-300 transform -translate-y-6 scale-75 top-3 left-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 text-base text-gray-500  peer-focus:text-gray-700 dark:text-gray-300 dark:peer-focus:text-gray-50">Chat Room Name</label>
+            <label class="absolute duration-300 transform -translate-y-6 scale-75 top-3 left-0 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 text-base text-gray-500  peer-focus:text-gray-700  ">Chat Room Name</label>
           </div>
           
           <div class="relative z-0 w-full group col-span-12">
-            <label for="invited" class="text-base text-gray-500  peer-focus:text-gray-700 dark:text-gray-300 dark:peer-focus:text-gray-50">Invite user</label>
+            <label for="invited" class="text-base text-gray-500  peer-focus:text-gray-700  dark:peer-focus:text-gray-50">Invite user</label>
             <Multiselect
               v-model="invited"
               mode="tags"
@@ -24,7 +24,7 @@
               :searchable="true"
               :create-option="true"
               :options="listuser"
-              class="text-gray-500 dark:bg-zinc-700 dark:border-zinc-800 dark:text-gray-300"
+              class="text-gray-500 "
             />
           </div>
 

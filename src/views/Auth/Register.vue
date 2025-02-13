@@ -201,6 +201,7 @@ const register = async () =>{
       nickname:form.value.nickname,
       name:localStorage.getItem('name'),
       email:localStorage.getItem('email'),
+      avatar:localStorage.getItem('avatar'),
       fcm_token:'sad'
     })
     .then(response => {

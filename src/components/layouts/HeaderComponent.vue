@@ -18,7 +18,7 @@
     
         <div class="flex gap-x-2 items-center justify-center cursor-pointer" @click="status = !status" v-click-outside="closeProfileAction">
             <div class="flex items-center w-10 lg:w-8 h-10 lg:h-8" >
-                <img v-if="user.avatar" :src="user.avatar?.url" alt="" class="object-cover w-8 h-8 rounded-full" srcset="">
+                <img v-if="user.avatar" :src="user.avatar" alt="" class="object-cover w-8 h-8 rounded-full" srcset="">
                 <div v-else class="w-8 h-8 rounded-full bg-gray-500 mx-auto"></div>
             </div>
             <div class="hidden lg:block">

@@ -23,7 +23,7 @@
                 </div>
               </div>
               <div class="flex gap-2">
-               <button type="button" @click="join(item.id)" class=" bg-sky-700 text-white p-2 text-sm rounded-md flex justify-center items-center dark:text-gray-300 dark:bg-zinc-700 dark:border-gray-900 dark:hover:bg-zinc-600" :class="loading.includes(item.id) ? 'cursor-not-allowed bg-slate-200 dark:hover:bg-zinc-700 opacity-60' : 'cursor-pointer'" >
+               <button type="button" @click="join(item.id)" class=" bg-sky-700 text-white p-2 text-sm rounded-md flex justify-center items-center dark:text-gray-300  dark:border-gray-900 " :class="loading.includes(item.id) ? 'cursor-not-allowed bg-slate-200 dark:hover:bg-zinc-700 opacity-60' : 'cursor-pointer'" >
                   Join Chat Room
                   <Spinner v-show="loading.includes(item.id)"/>
                </button>
