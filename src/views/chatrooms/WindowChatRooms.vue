@@ -76,6 +76,7 @@
                       <unicon icon-style="line" class="h-4" name="message" fill="white"></unicon>
                       <Spinner v-show="loading"/>
                     </button>
+                    <P class="text-red" v-if="status">{{ status }}</P>
                   </div>
                 </div>
                 <div class=" col-auto h-[600px]  bg-white dark:bg-zinc-800 dark:border-zinc-700 rounded-md">
@@ -120,6 +121,7 @@ import { onMounted,computed,ref, inject, watch, nextTick  } from 'vue'
 import Spinner from '../../components/ui/Spinner.vue';
 import {useRoute} from 'vue-router'
 import { toast } from 'vue3-toastify'
+import {onMessageListener,eventBus  } from "../../firebase";
 
   const axios = inject('axios')
   const store = useStore()
@@ -130,7 +132,8 @@ import { toast } from 'vue3-toastify'
   const message = ref('')
   const chatContainer = ref(null);
   const loadinglogout = ref(false)
-
+  const chatId = ref('')
+  const status = ref('');
 
   watch(() => chatRooms.value.chat_rooms_history, async () => {
     await nextTick(); // Ensure DOM updates before scrolling
@@ -139,21 +142,28 @@ import { toast } from 'vue3-toastify'
     }
   }, { deep: true })
 
-  onMounted(() => {
-    getData()
+  onMounted(async () => {
+    await getData()
+    chatId.value = chatRooms.value.name;
+    eventBus.on('chat'+chatId.value, getData);
     console.log(user.value.id)
   })
 
   const getData = async () => {
-   
+    loading.value = true;
+    status.value ='Loading Incoming Data..';
     await axios
       .get(`/chat/chat_rooms/${route.params.id}?relations=chat_rooms_user,chat_user_history`, store.getters['Auth/config'])
       .then(ress => {
         chatRooms.value = ress.data.data;
         console.log( chatRooms.value.name,'name')
+        loading.value = false;
+        status.value =''
       })
       .catch(err => {
         let response = responseErrorApi(err)
+        loading.value = false;
+         status.value =''
       })
   }
 
@@ -166,7 +176,8 @@ import { toast } from 'vue3-toastify'
         .post('chat/chat_rooms_history',
           { 
             chat_room_id:chatRooms.value.id,
-            message:message.value
+            message:message.value,
+            name:chatRooms.value.name
           },
           store.getters['Auth/config']
         )

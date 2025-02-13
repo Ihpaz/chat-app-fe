@@ -139,8 +139,8 @@
   import { initFlowbite } from 'flowbite'
   import {responseErrorApi} from '../../helpers/response.js'
   import { googleAuthCodeLogin,googleTokenLogin } from "vue3-google-login"
-  // const echo = inject('echo') // Mendapatkan instance Echo dari injection
-  // const channel = 'channel' // Nama channel yang ingin didengarkan
+  import { requestPermission, onMessageListener } from "../../firebase";
+
   const loading = ref(false)
 
 
@@ -229,12 +229,25 @@
               })
              
             }else{
-              store.dispatch('Auth/setUser', response.data.user)
-              store.dispatch('Auth/setToken', response.data.authorisation?.token)
-              localStorage.setItem('token', response.data.authorisation?.token)
-              router.push({
-                name: 'dashboard',
-              })
+              requestPermission().then((ress)=>{
+                
+                store.dispatch('Auth/setUser', response.data.user)
+                store.dispatch('Auth/setToken', response.data.authorisation?.token)
+                localStorage.setItem('token', response.data.authorisation?.token)
+
+                console.log(ress,'ress')
+                axios
+                    .put(`auth/user/${response.data?.user?.id}`, {fcm_token:ress},store.getters['Auth/config'])
+                    .then(response => {
+                      router.push({
+                        name: 'dashboard',
+                      })
+                    })
+
+              
+              });
+             
+             
             }
 
           

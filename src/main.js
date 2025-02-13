@@ -25,7 +25,7 @@ import {
   uniFileDownloadAlt,uniGoogle,uniChatInfo,uniMessage,uniSignOutAlt
  } from 'vue-unicons/dist/icons'
 import store from './store'
-
+import './firebase';
 
 const app = createApp(App)
 app.provide('echo', window.Echo)

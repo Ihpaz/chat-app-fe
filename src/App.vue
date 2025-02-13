@@ -129,13 +129,16 @@ input {
 </style>
 <script setup>
 import { useStore } from 'vuex'
-import { computed, ref } from 'vue'
-// import HeaderVue from './components/layouts/Header.vue'
-// import Sidebar from './components/layouts/Sidebar.vue'
+import { computed, ref,onMounted } from 'vue'
 import HeaderComponent from './components/layouts/HeaderComponent.vue';
 import SidebarComponent from './components/layouts/SidebarComponent.vue';
 import FooterComponent from './components/layouts/FooterComponent.vue';
-// const status_bar = computed(() => store.getters.status_sidebar)
+import {onMessageListener } from "./firebase";
+
+onMounted(() => {
+  onMessageListener().catch((err) => console.error("Notification error:", err));
+});
+
 const store = useStore()
 const darkMode = ref(
   localStorage.theme === 'dark' || !('theme' in localStorage)

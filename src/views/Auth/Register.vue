@@ -146,6 +146,7 @@ import { Field,Form,useForm, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup'
 import {responseErrorApi} from '../../helpers/response.js'
 import {validatePhoneNumber,validateNumeric,validateAlphaNumeric} from '../../helpers/global.js'
+import { requestPermission, onMessageListener } from "../../firebase";
 
 const {setErrors} = useForm()
 const darkMode = ref(
@@ -154,7 +155,7 @@ const darkMode = ref(
 
 const show = ref(true)
 const show2 = ref(true)
-
+const token = ref('')
 const loading = ref(false)
 
 
@@ -182,9 +183,11 @@ const updateThemeClass = () => {
 }
 
 // Set up the initial dark mode class
-onMounted(() => {
+onMounted(async () => {
   updateThemeClass()
   initFlowbite()
+  token.value = await requestPermission();
+  console.log(token.value)
 })
 
 const store = useStore()
@@ -195,14 +198,15 @@ const router = useRouter()
 const register = async () =>{
   loading.value = true
   let response;
- 
+  token.value = await requestPermission();
+  console.log(token.value)
   await axios
     .post('auth/register',{
       nickname:form.value.nickname,
       name:localStorage.getItem('name'),
       email:localStorage.getItem('email'),
       avatar:localStorage.getItem('avatar'),
-      fcm_token:'sad'
+      fcm_token:token.value
     })
     .then(response => {
 
