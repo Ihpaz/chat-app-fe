@@ -185,12 +185,21 @@
         await axios
           .post('auth/login', form.value)
           .then(response => {
-            store.dispatch('Auth/setUser', response.data.user)
-            store.dispatch('Auth/setToken', response.data.authorisation?.token)
-            localStorage.setItem('token', response.data.authorisation?.token)
-            router.push({
-              name: 'dashboard',
-            })
+
+            requestPermission().then((ress)=>{
+                
+                store.dispatch('Auth/setUser', response.data.user)
+                store.dispatch('Auth/setToken', response.data.authorisation?.token)
+                localStorage.setItem('token', response.data.authorisation?.token)
+                
+                  axios
+                  .put(`auth/user/${response.data?.user?.id}`, {fcm_token:ress},store.getters['Auth/config'])
+                  .then(response => {
+                    router.push({
+                      name: 'dashboard',
+                    })
+                  })
+              });
           })
           .catch(err => {
             // errorMessage.value = 'Email or Password is Incorret'

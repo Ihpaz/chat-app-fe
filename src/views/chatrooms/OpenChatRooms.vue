@@ -12,7 +12,8 @@
                   <p class="dark:text-white">Rooms</p>
                 </div>
             </div>
-            <div class="flex justify-between 
+            <SkeletionListComponent v-if="!chatRooms"/>
+            <div v-else class="flex justify-between 
               items-center p-8 text-lg text-red-500 bg-white dark:bg-zinc-800
                dark:border-zinc-700 rounded-md cursor-pointer" v-for="item,index in chatRooms" :key="index">
               <div class="flex gap-2">
@@ -44,6 +45,7 @@ import { useStore } from 'vuex'
 import { onMounted,computed,ref, inject } from 'vue'
 // import CardRooms from '../../components/ui/CardRooms.vue';
 import ButtonPrimary from '../../components/ui/ButtonPrimary.vue'
+import SkeletionListComponent from '../../components/patrial/SkeletionListComponent.vue'
 
   const axios = inject('axios')
   const store = useStore()

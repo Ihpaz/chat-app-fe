@@ -18,7 +18,7 @@
            
             <div class="grid lg:grid-cols-3 grid-cols-1  gap-2">
                 <div class="relative col-span-2 h-[600px]  bg-white dark:bg-zinc-800 dark:border-zinc-700 rounded-md ">
-                  <div ref="chatContainer" class="mb-4 max-h-[550px] flex flex-col gap-2 overflow-scroll">
+                  <div ref="chatContainer" class="mb-4 h-[550px] flex flex-col gap-2 overflow-scroll">
                     <template v-if="chatRooms.chat_rooms_history?.length > 0">
                       <div
                         v-for="(msg, index) in chatRooms.chat_rooms_history"

@@ -11,7 +11,8 @@
                   </div> 
                 <p>Rooms</p></div>
             </div>
-            <div class="flex justify-between 
+            <SkeletionListComponent v-if="!chatRooms"/>
+            <div v-else class="flex justify-between 
               items-center p-8 text-lg text-red-500 bg-white dark:bg-zinc-800
                dark:border-zinc-700 rounded-md cursor-pointer" v-for="item,index in chatRooms" :key="index">
               <div class="flex gap-2">
@@ -23,7 +24,9 @@
                 </div>
               </div>
               <div class="flex gap-2">
-               <button type="button" @click="join(item.id,item.uuid)" class=" bg-sky-700 text-white p-2 text-sm rounded-md flex justify-center items-center dark:text-gray-300  dark:border-gray-900 " :class="loading.includes(item.id) ? 'cursor-not-allowed bg-slate-200 dark:hover:bg-zinc-700 opacity-60' : 'cursor-pointer'" >
+               <button type="button" @click="join(item.id,item.uuid)" class=" bg-sky-700 text-white p-2
+                text-sm rounded-md flex justify-center items-center dark:text-gray-300 
+                 dark:border-gray-900 " :class="loading.includes(item.id) ? 'cursor-not-allowed bg-slate-200 dark:hover:bg-zinc-700 opacity-60 dark:text-white' : 'cursor-pointer'" >
                   Join Chat Room
                   <Spinner v-show="loading.includes(item.id)"/>
                </button>
@@ -42,6 +45,8 @@ import { useStore } from 'vuex'
 import { onMounted,computed,ref, inject } from 'vue'
 import Spinner from '../../components/ui/Spinner.vue';
 import { useRouter } from 'vue-router'
+import SkeletionListComponent from '../../components/patrial/SkeletionListComponent.vue'
+
 
   const axios = inject('axios')
   const store = useStore()
